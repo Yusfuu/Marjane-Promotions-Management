@@ -1,0 +1,78 @@
+<%- include('../../partials/head'); %>
+
+  <body>
+
+    <div class="bg-white py-6 sm:py-8 lg:py-12">
+      <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
+        <div class="flex justify-between items-end gap-4 mb-6">
+          <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold">Selected</h2>
+
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+          <% promotions.forEach(function(promotion){ %>
+            <div class="w-96" id="promo" data-id="<%= promotion.id %>">
+              <span class="group h-96 block  bg-gray-100 rounded-t-lg overflow-hidden relative">
+                <img src="<%= promotion.product.url %>" loading="lazy" alt="Photo by Austin Wade"
+                  class="w-full h-full object-cover object-center group-hover:scale-110 transition duration-200" />
+                <span
+                  class="bg-red-500 text-white text-sm font-semibold tracking-wider uppercase rounded-r-lg absolute left-0 top-3 px-3 py-1.5">-
+                  <%= promotion.discount %>%
+                </span>
+              </span>
+
+              <div class="flex justify-between items-start bg-gray-100 rounded-b-lg gap-2 p-4">
+                <div class="flex flex-col">
+                  <span
+                    class="text-red-400 hover:text-gray-500 lg:text-lg font-bold transition duration-100">Unconfirmed
+                    promotion</span>
+                  <span class="text-gray-500 text-sm lg:text-base">
+                    <%= promotion.duration %> Day
+                  </span>
+                </div>
+
+                <div class="flex flex-col items-end">
+                  <span class="text-gray-600 lg:text-lg font-bold">$<%= promotion.product.price %></span>
+                  <span class="text-blue-500 text-sm">$<%= promotion.FidelityCard %></span>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const promotions = [...document.querySelectorAll('#promo')];
+    promotions.forEach((promo) => {
+      promo.addEventListener('click', (e) => {
+        Swal.fire({
+          title: 'Do you want to save the Confirm?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Confirm',
+          denyButtonText: `Don't save`,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+
+            const resposne = await fetch('http://localhost:3000/api/manager/promotion/confirm', {
+              method: 'POST',
+              body: JSON.stringify({ confirmation: true, promotionId: promo.dataset.id }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+
+            const data = await resposne.json();
+
+            Swal.fire('Saved!', data.message, 'success')
+          } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info')
+          }
+        })
+      });
+    });
+  </script>
+
+  </html>

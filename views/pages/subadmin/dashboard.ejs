@@ -1,0 +1,30 @@
+<%- include('../../partials/head'); %>
+
+  <body>
+    <section class="w-full px-8 py-16 bg-gray-100 xl:px-8">
+      <div class="flex grid h-full grid-cols-12 gap-10 pb-10 mt-8 sm:mt-16">
+        <% cards.forEach(function(card){ %>
+          <a href="<%= card.url %>"
+            class="cursor-pointer relative block flex-col items-start justify-end h-full col-span-12 group md:col-span-6 xl:col-span-4">
+            <div
+              class="relative rounded-xl  z-20 w-full h-auto py-8 text-white <%= card.color %> border-t-0 border-yellow-200 px-7">
+              <span class="inline-block text-xs font-semibold absolute top-0 -mt-3.5 rounded-full px-4 py-2 uppercase
+                text-purple-500 bg-gray-800 shadow-lg">Resources</span>
+              <h2 class="mb-5 text-5xl font-bold">
+                <span>
+                  <%= card.title %>
+                </span>
+              </h2>
+              <p class="mb-2 text-lg font-normal text-purple-100 opacity-100">
+                <%= card.description %>
+              </p>
+            </div>
+          </a>
+          <% }); %>
+      </div>
+    </section>
+    <%- include('../../partials/footer'); %>
+
+  </body>
+
+  </html>

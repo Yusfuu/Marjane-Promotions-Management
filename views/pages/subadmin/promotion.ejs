@@ -1,0 +1,103 @@
+<%- include('../../partials/head'); %>
+
+  <body>
+
+    <div class="bg-white py-6 sm:py-8 lg:py-12">
+      <div class="max-w-screen-2xl px-4 md:px-8 mx-auto">
+        <div class="flex justify-between items-end gap-4 mb-6">
+          <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold">Selected</h2>
+
+          <span id="add_promotion"
+            class="cursor-pointer inline-block bg-white hover:bg-gray-100 active:bg-gray-200 focus-visible:ring ring-indigo-300 border text-gray-500 text-sm md:text-base font-semibold text-center rounded-lg outline-none transition duration-100 px-4 md:px-8 py-2 md:py-3">Create
+            one</span>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-8">
+
+          <% promotions.forEach(function(promotion){ %>
+            <div>
+              <a href="#" class="group h-80 block bg-gray-100 rounded-lg overflow-hidden relative mb-2 lg:mb-3">
+                <img src="<%= promotion.product.url %>" loading="lazy" alt="Photo by Galina N"
+                  class="w-full h-full object-cover object-center group-hover:scale-110 transition duration-200" />
+                <div class="flex gap-2 absolute left-0 bottom-2">
+                  <span
+                    class="bg-red-500 text-white text-sm font-semibold tracking-wider uppercase rounded-r-lg px-3 py-1.5">-
+                    <%= promotion.discount %>%
+                  </span>
+                </div>
+              </a>
+
+              <div>
+                <a href="#" class="text-gray-500 hover:gray-800 lg:text-lg transition duration-100 mb-1">Fancy Plant</a>
+
+                <div class="flex items-end gap-2">
+                  <span class="text-gray-800 lg:text-lg font-bold">$<%= promotion.product.price %></span>
+                </div>
+              </div>
+            </div>
+            <% }); %>
+
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const add = document.getElementById('add_promotion');
+    const className = 'm-2 w-4/6 bg-gray-50 text-gray-800 border focus:ring ring-indigo-300 rounded outline-none transition duration-100 px-3 py-2'
+    const html = `
+    <div class="m-3 flex flex-col gap-3">
+      <input id="swal-input1" name="productId" type="text" required
+              class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm"
+              placeholder="product id ex: 34cd5abb-b904-4582-978e-1df45c94c460">
+    <input id="swal-input2" min="0" max="100" name="discount" type="number" required
+            class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm"
+            placeholder="20 %">
+          <select id="swal-input3" required name="duration"
+            class="focus:ring ring-indigo-300 rounded-md border border-gray-300 transition duration-100 cursor-pointer outline-none p-3 w-full">
+            <option value="7">7</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+      </div>
+    `
+    add.addEventListener('click', async (e) => {
+      const swal = await Swal.fire({
+        title: 'Add Promotion',
+        html,
+        focusConfirm: false,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value,
+            document.getElementById('swal-input2').value,
+            document.getElementById('swal-input3').value,
+          ]
+        }
+      });
+
+      const [productId, discount, duration] = swal.value;
+      const response = await fetch('http://localhost:3000/api/subadmin/promotion/create', {
+        method: 'POST',
+        body: JSON.stringify({ productId, discount, duration }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        return Swal.fire({
+          title: 'Error',
+          text: data,
+          icon: 'error'
+        })
+      }
+      Swal.fire({
+        title: 'Success',
+        text: data.message,
+        icon: 'success'
+      });
+    });
+  </script>
+
+  </html>

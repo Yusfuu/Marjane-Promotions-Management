@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String
+  createdAt   DateTime  @default(now())
+  lastLoginAt DateTime?
+  updatedAt   DateTime  @updatedAt
+}
+
+model Subadmin {
+  id              String      @id @default(uuid())
+  email           String      @unique
+  name            String
+  isEmailVerified Boolean     @default(false)
+  center          Center[]
+  Promotion       Promotion[]
+  Manager         Manager[]
+  lastLoginAt     DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Manager {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  name            String
+  isEmailVerified Boolean   @default(false)
+  categoryId      String
+  category        Category  @relation(fields: [categoryId], references: [id])
+  centerId        String
+  center          Center    @relation(fields: [centerId], references: [id])
+  lastLoginAt     DateTime?
+  subadminId      String?
+  Subadmin        Subadmin? @relation(fields: [subadminId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Center {
+  id         String    @id @default(uuid())
+  name       String
+  city       String
+  Manager    Manager[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  Subadmin   Subadmin? @relation(fields: [subadminId], references: [id])
+  subadminId String?
+}
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  products  Product[]
+  Manager   Manager[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id         String     @id @default(uuid())
+  name       String
+  price      Float
+  quantity   Int
+  categoryId String
+  Category   Category   @relation(fields: [categoryId], references: [id])
+  Promotion  Promotion?
+  url        String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Promotion {
+  id           String   @id @default(uuid())
+  productId    String   @unique
+  product      Product  @relation(fields: [productId], references: [id])
+  subadminId   String
+  subadmin     Subadmin @relation(fields: [subadminId], references: [id])
+  discount     Float
+  FidelityCard Float
+  duration     Int
+  confirmation Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Logs {
+  id        String   @id @default(uuid())
+  operation String
+  createdAt DateTime @default(now())
+}
