@@ -58,9 +58,16 @@
 
 
       if (data.error) {
-        alert(data.error);
-      } else {
-        // window.location.href = '/account/admin/dashboard';
+        return Swal.fire({
+          title: 'Error',
+          text: data.error,
+          icon: 'error'
+        })
       }
+      Swal.fire({
+        title: 'Success',
+        text: data.message,
+        icon: 'success'
+      })
     });
   </script>

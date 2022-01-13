@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
 
   await sendEmail(process.env.TEMP_EMAIL_PREFIX, url, email);
 
-  res.json(currentUser);
+  res.json({ message: 'Check your email to login your account' });
 });
 
 
