@@ -1,7 +1,12 @@
 <%- include('../../partials/head'); %>
 
   <body>
+
     <section class="w-full px-8 py-16 bg-gray-100 xl:px-8">
+      <button id="logout"
+        class="order-last sm:order-none w-full sm:w-auto inline-block bg-red-600 hover:bg-red-700 active:bg-red-800 focus-visible:ring ring-indigo-300 text-white text-xs md:text-sm font-semibold text-center whitespace-nowrap rounded-lg outline-none transition duration-100 px-4 py-2">
+        Logout
+      </button>
       <div class="flex grid h-full grid-cols-12 gap-10 pb-10 mt-8 sm:mt-16">
         <% cards.forEach(function(card){ %>
           <a href="<%= card.url %>"
@@ -26,5 +31,18 @@
     <%- include('../../partials/footer'); %>
 
   </body>
+  <script>
+    document.getElementById('logout').addEventListener('click', async () => {
+      const response = await fetch('http://localhost:3000/api/account/logout', {
+        method: 'POST',
+        body: JSON.stringify({}),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      window.location.href = '/';
+    });
+  </script>
 
   </html>

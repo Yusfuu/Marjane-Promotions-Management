@@ -11,6 +11,9 @@ router.get('/login', isAuthenticated(), (req, res) => {
   res.render('pages/admin/login');
 });
 
+
+
+
 router.use(isAuthenticated('admin'));
 // render dashboard page for admin
 router.get('/dashboard', (req, res) => {
@@ -27,8 +30,20 @@ router.get('/dashboard', (req, res) => {
       color: 'bg-purple-500',
       url: '/admin/dashboard/subadmin'
     },
+    {
+      title: 'Stastics',
+      description: 'Statistics of the Marjane including the number of promotion and others',
+      color: 'bg-blue-500',
+      url: '/admin/dashboard/stats'
+    },
   ];
   res.render('pages/admin/dashboard', { cards });
+});
+
+router.get('/dashboard/stats', async (req, res) => {
+  const promotions = await prisma.promotion.findMany({});
+  console.log(promotions);
+  res.render('pages/admin/stats');
 });
 
 router.get('/dashboard/subadmin', async (req, res) => {

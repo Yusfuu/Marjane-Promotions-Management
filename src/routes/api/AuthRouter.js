@@ -39,4 +39,12 @@ router.post('/login', async (req, res) => {
   res.json(currentUser);
 });
 
+
+router.post('/logout', async (req, res) => {
+  await req.session.destroy();
+  res.json({
+    message: 'logged out'
+  })
+});
+
 export { router };
