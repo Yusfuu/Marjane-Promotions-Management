@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
     return res.status(401).json({ error: error.password });
   }
 
-  req.session.user = { id: user.id, iat: Date.now(), isAdmin: true };
+  req.session.user = { id: user.id, role: 'admin' };
   await req.session.save();
   res.json({ ok: true });
 });
@@ -67,6 +67,18 @@ router.post('/create', async (req, res) => {
 }
 );
 
+
+router.post('/subadmin/delete', async (req, res) => {
+  const { subadminId } = req.body;
+
+  const deleted = await prisma.subadmin.delete({ where: { id: subadminId } }).catch(_ => _);
+
+  res.json({
+    data: deleted,
+    message: 'Subadmin deleted successfully',
+  });
+
+});
 
 
 

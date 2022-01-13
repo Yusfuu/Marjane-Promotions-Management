@@ -37,7 +37,6 @@ router.get('/dashboard/manger', async (req, res) => {
     where: { subadminId: id }
   });
 
-  console.log(managers);
   res.render('pages/subadmin/manager', { managers });
 });
 

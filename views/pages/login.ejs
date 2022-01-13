@@ -46,7 +46,6 @@
       const formdata = new FormData(form);
 
       const user = Object.fromEntries(formdata);
-      console.log(user);
       const url = 'http://localhost:3000/api/account/login';
       const res = await fetch(url, {
         method: 'POST',

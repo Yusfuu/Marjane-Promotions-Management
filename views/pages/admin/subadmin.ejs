@@ -1,0 +1,188 @@
+<%- include('../../partials/head'); %>
+
+  <body>
+    <div class="bg-white py-6 sm:py-8 lg:py-12">
+      <div class="max-w-screen-xl px-4 md:px-8 mx-auto">
+        <div class="mb-10 md:mb-16 flex flex-col">
+          <h2 class="text-gray-800 text-2xl lg:text-3xl font-bold text-center mb-4 md:mb-6">Meet our Team</h2>
+
+          <button id="add_subadmin"
+            class="self-center transition order-last sm:order-none w-full sm:w-auto inline-block bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 focus-visible:ring ring-indigo-300 text-white text-xs md:text-sm font-semibold text-center whitespace-nowrap rounded-lg outline-none transition duration-100 px-4 py-2">
+            Create one
+          </button>
+        </div>
+        <!-- This example requires Tailwind CSS v2.0+ -->
+        <div class="flex flex-col">
+          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead class="bg-gray-50">
+                    <tr>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Promotion
+                      </th>
+                      <th scope="col"
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Create At
+                      </th>
+                      <th scope="col" class="relative px-6 py-3">
+                        <span class="sr-only">Edit</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody class="bg-white divide-y divide-gray-200">
+                    <% subadmins.forEach(function(subadmin){ %>
+                      <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                              <img class="h-10 w-10 rounded-full"
+                                src="https://img.icons8.com/color/480/000000/circled-user-male-skin-type-4--v1.png"
+                                alt="">
+                            </div>
+                            <div class="ml-4">
+                              <div class="text-sm font-medium text-gray-900">
+                                <%= subadmin.email %>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <div class="text-sm text-gray-900">
+                            <%= subadmin.name %>
+                          </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                          <%= subadmin._count.Promotion %>
+
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <%= new Date(subadmin.createdAt).toDateString() %>
+
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <span data-id="<%= subadmin.id %>" id="delete_subadmin"
+                            class="cursor-pointer px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            Delete
+                          </span>
+                        </td>
+                      </tr>
+                      <% }); %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+
+
+
+
+
+
+  <script>
+    const add = document.querySelector('#add_subadmin');
+    const deleteSubadmin = [...document.querySelectorAll('#delete_subadmin')];
+
+
+    deleteSubadmin.forEach((item) => {
+      item.addEventListener('click', (e) => {
+        const id = item.dataset.id;
+
+        Swal.fire({
+          title: 'Do you want to save the Confirm?',
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: 'Confirm',
+          denyButtonText: `Don't save`,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+
+            const resposne = await fetch('http://localhost:3000/api/admin/subadmin/delete', {
+              method: 'POST',
+              body: JSON.stringify({ subadminId: id }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+
+            const data = await resposne.json();
+
+            await Swal.fire('Deleted!', data.message, 'success');
+            location.reload();
+          } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info')
+          }
+        })
+
+      });
+    });
+
+
+    const html = `
+    <div class="m-3 flex flex-col gap-3">
+    <input id="swal-input1"  type="text" autocomplete="name" required
+      class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm"
+      placeholder="John Doe">
+    <input id="swal-input2"  type="email" autocomplete="email" required
+      class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm"
+      placeholder="marjane@magic.link">
+    <input id="swal-input3"  type="text" required
+      class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm"
+      placeholder="center id ex: 34cd5abb-b904-4582-978e-1df45c94c460">
+  </div>`;
+    add.addEventListener('click', async (e) => {
+      const swal = await Swal.fire({
+        title: 'Add Promotion',
+        html,
+        focusConfirm: false,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value,
+            document.getElementById('swal-input2').value,
+            document.getElementById('swal-input3').value,
+          ]
+        }
+      });
+
+      const [name, email, centerId] = swal.value;
+      const response = await fetch('http://localhost:3000/api/admin/create', {
+        method: 'POST',
+        body: JSON.stringify({ name, email, centerId }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      const data = await response.json();
+      if (data.error) {
+        return Swal.fire({
+          title: 'Error',
+          text: data.error,
+          icon: 'error'
+        })
+      }
+      Swal.fire({
+        title: 'Success',
+        text: data.message,
+        icon: 'success'
+      });
+      location.reload();
+
+    });
+  </script>
+
+  </html>

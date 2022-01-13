@@ -1,7 +1,5 @@
 import express from "express";
 import { prisma } from "../../prisma/client";
-import { createToken, verifyToken } from "../utils/jwt";
-import { requiredAuth } from "../middleware/requiredAuth";
 import { promotionTime, isAuthenticated } from "../middleware";
 
 const router = express.Router();

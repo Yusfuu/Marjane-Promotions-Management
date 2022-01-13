@@ -22,39 +22,32 @@ router.get('/dashboard', (req, res) => {
 
   const cards = [
     {
-      title: 'Create a Subadmin',
+      title: 'Subadmin',
       description: 'Passwordless login that’s delightful, blazing-fast, and fully customizable',
       color: 'bg-purple-500',
-      url: '/admin/dashboard?action=create'
+      url: '/admin/dashboard/subadmin'
     },
   ];
   res.render('pages/admin/dashboard', { cards });
 });
 
+router.get('/dashboard/subadmin', async (req, res) => {
+  const subadmins = await prisma.subadmin.findMany({
+    include: {
+      _count: {
+        select: {
+          Promotion: true,
+        }
+      }
+    }
+  });
+  res.render('pages/admin/subadmin', { subadmins });
+});
 
 
 
-// router.delete('/delete', requiredAuth({ role: 'ADMIN' }), async (req, res) => {
-//   // validate body
-//   const body = { ...req.body };
 
-//   const subadminId = body.subadminId;
 
-//   // check if subadmin exists
-//   const subadmin = await prisma.subadmin.findUnique({ where: { id: subadminId } });
-
-//   if (!subadmin) {
-//     return res.status(400).json({ error: 'Subadmin does not exist' });
-//   }
-
-//   const deleted = await prisma.subadmin.delete({ where: { id: subadminId } });
-
-//   res.json({
-//     data: deleted,
-//     message: 'Subadmin deleted successfully',
-//   });
-
-// });
 
 
 // router.get('/operations', requiredAuth({ role: 'ADMIN' }), async (req, res) => {

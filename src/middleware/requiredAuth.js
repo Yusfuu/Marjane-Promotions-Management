@@ -27,7 +27,6 @@ export const requiredAuth = (role = {}) => async (req, res, next) => {
 
 export const isAuthenticated = (entity = null) => (req, res, next) => {
   const user = req.session.user;
-
   if (!entity) {
     if (user && req.path === '/account/login') {
       return res.redirect(`/${user.role}/dashboard`);
