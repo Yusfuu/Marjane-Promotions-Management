@@ -63,7 +63,6 @@ Run the project
 
 ## Authors
 
-- [@Hamza Azouzi](https://twitter.com/HamzaAzouzi12)
 - [@Youssef Hajjari](https://twitter.com/Yosufuu)
 
 
