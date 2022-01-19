@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "moduleResolution": "Node",
     "incremental": true,
+    "noImplicitAny": false,
     "baseUrl": "src",
     "paths": {
       "@lib/*": ["lib/*"],
