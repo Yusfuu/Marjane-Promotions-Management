@@ -1,15 +1,15 @@
-import { prisma } from "../../../prisma/client";
-import express from "express";
-import { seal } from "../../lib/seal";
-import sendEmail from "../../utils/email";
-import { isAuthenticated } from "../../middleware";
+import express, { Request, Response } from "express";
+import { sendEmail } from '@utils/email';
+import { prisma } from "@lib/prisma";
+import { seal } from "@lib/seal";
+import { isAuthenticated } from "@middlewares/index";
 
 const router = express.Router();
 
 
 router.use(isAuthenticated('subadmin'))
 
-router.post('/promotion/create', async (req, res) => {
+router.post('/promotion/create', async (req: Request, res: Response) => {
   const body = { ...req.body };
   const { productId, discount, duration } = body;
   const product = await prisma.product.findUnique({ where: { id: productId }, include: { Promotion: true, Category: true } }).catch(_ => _);
@@ -31,12 +31,15 @@ router.post('/promotion/create', async (req, res) => {
     return res.status(400).json({ error: 'Discount cannot be more than 20 for Multimedia' });
   }
 
+  //@ts-ignore
+  const { id } = req.session.user
+
   const promotion = await prisma.promotion.create({
     data: {
       discount: +discount,
       productId,
       duration: +duration,
-      subadminId: req.session.user.id,
+      subadminId: id,
       FidelityCard: (+discount / 5) * 50
     }
   });
@@ -45,8 +48,9 @@ router.post('/promotion/create', async (req, res) => {
 }
 );
 
-router.post('/manger/create', async (req, res) => {
+router.post('/manger/create', async (req: Request, res: Response) => {
   const { email, name, categoryId } = req.body;
+  //@ts-ignore
   const { id, center } = req.session.user;
 
 
@@ -77,14 +81,14 @@ router.post('/manger/create', async (req, res) => {
 
   const url = `${callback}?seal=${sealData}`;
 
-  await sendEmail(process.env.TEMP_EMAIL_PREFIX, url, email);
+  await sendEmail(process.env.TEMP_EMAIL_PREFIX as string, url);
 
   res.json({ message: 'manager created successfully' });
 });
 
 
 
-router.post('/category/create', async (req, res) => {
+router.post('/category/create', async (req: Request, res: Response) => {
   const { name } = req.body;
 
   const category = await prisma.category.create({ data: { name } }).catch(_ => _);

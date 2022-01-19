@@ -1,11 +1,11 @@
-import express from "express";
-import { prisma } from "../../prisma/client";
-import { isAuthenticated } from "../middleware";
+import express, { Request, Response } from "express";
+import { isAuthenticated } from "@middlewares/index";
+import { prisma } from "@lib/prisma";
 
 const router = express.Router();
 
 router.use(isAuthenticated('subadmin'));
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', (req: Request, res: Response) => {
 
   const cards = [
     {
@@ -31,7 +31,8 @@ router.get('/dashboard', (req, res) => {
   res.render('pages/subadmin/dashboard', { cards });
 });
 
-router.get('/dashboard/manger', async (req, res) => {
+router.get('/dashboard/manger', async (req: Request, res: Response) => {
+  // @ts-ignore
   const { id } = req.session.user;
   const managers = await prisma.manager.findMany({
     where: { subadminId: id }
@@ -40,7 +41,7 @@ router.get('/dashboard/manger', async (req, res) => {
   res.render('pages/subadmin/manager', { managers });
 });
 
-router.get('/dashboard/category', async (req, res) => {
+router.get('/dashboard/category', async (req: Request, res: Response) => {
   const categories = await prisma.category.findMany({
     include: {
       _count: {
@@ -53,7 +54,8 @@ router.get('/dashboard/category', async (req, res) => {
   res.render('pages/subadmin/category', { categories });
 });
 
-router.get('/dashboard/promotion', async (req, res) => {
+router.get('/dashboard/promotion', async (req: Request, res: Response) => {
+  //@ts-ignore
   const { id } = req.session.user;
   const promotions = await prisma.promotion.findMany({
     where: {
@@ -71,13 +73,10 @@ router.get('/dashboard/promotion', async (req, res) => {
 });
 
 
-// middleware for promotionTime
+router.get('/promotions', async (req: Request, res: Response) => {
+  // @ts-ignore
+  const { id } = req.session.user;
 
-// router.use(promotionTime);
-
-
-router.get('/promotions', async (req, res) => {
-  const { id } = req.currentUser;
   const promotions = await prisma.promotion.findMany({
     where: {
       subadminId: id

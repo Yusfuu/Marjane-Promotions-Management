@@ -1,5 +1,5 @@
-const Mailgen = require('mailgen');
-const nodemailer = require('nodemailer');
+import Mailgen from "mailgen";
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.ethereal.email",
@@ -23,7 +23,7 @@ const mailGenerator = new Mailgen({
   }
 });
 
-const sendEmail = async (email, link) => {
+export const sendEmail = async (email: string, link: string) => {
   const html = {
     body: {
       intro: 'Welcome to Marjan! We\'re very excited to have you on board.',
@@ -50,8 +50,5 @@ const sendEmail = async (email, link) => {
 
   return info;
 }
-
-
-module.exports = sendEmail;
 
 

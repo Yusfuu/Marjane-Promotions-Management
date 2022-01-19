@@ -1,13 +1,13 @@
-import express from "express";
-import { prisma } from "../../../prisma/client";
-import { isAuthenticated } from "../../middleware";
+import express, { Request, Response } from "express";
+import { prisma } from "@lib/prisma";
+import { isAuthenticated } from "@middlewares/index";
 
 const router = express.Router();
 
 router.use(isAuthenticated('manager'));
 
-router.post('/promotion/confirm', async (req, res) => {
-  const { promotionId, confirmation } = { ...req.body };
+router.post('/promotion/confirm', async (req: Request, res: Response) => {
+  const { promotionId, confirmation }: any = { ...req.body };
 
   const updatePromotion = await prisma.promotion.update({
     where: { id: promotionId },

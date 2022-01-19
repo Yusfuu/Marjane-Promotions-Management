@@ -1,12 +1,13 @@
-import express from "express";
-import { prisma } from "../../prisma/client";
-import { promotionTime, isAuthenticated } from "../middleware";
+import express, { Request, Response } from "express";
+import { prisma, } from "@lib/prisma";
+import { isAuthenticated } from "@middlewares/index";
+import { Promotion } from "@prisma/client";
 
 const router = express.Router();
 
 router.use(isAuthenticated('manager'));
 
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', (req: Request, res: Response) => {
 
   const cards = [
     {
@@ -20,14 +21,18 @@ router.get('/dashboard', (req, res) => {
   res.render('pages/manager/dashboard', { cards });
 });
 
-router.get('/dashboard/promotion', async (req, res) => {
-  const { categoryId, centerId } = req.session.user;
-  const confirmation = req?.query?.confirmation || false;
-  const promotions = await prisma.promotion.findMany({
+
+
+router.get('/dashboard/promotion', async (req: Request, res: Response) => {
+  //@ts-ignore
+  const { categoryId, centerId } = req.session?.user;
+  const confirmation = req?.query?.confirmation || false as any;
+
+  const promotions: Promotion = await prisma.promotion.findMany({
     where: {
       product: { categoryId: { equals: categoryId } },
       subadminId: { equals: centerId },
-      confirmation
+      confirmation: confirmation
     },
     include: {
       product: true

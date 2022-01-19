@@ -1,15 +1,14 @@
-import express from "express";
-import { prisma } from "../../prisma/client";
-import { seal, unseal } from "../lib/seal";
+import express, { Request, Response } from "express";
+import { unseal } from "@lib/seal";
 
 const router = express.Router();
 
-
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   if (!req.query) res.json({ ok: false });
 
   const seal = await unseal(req.query.seal);
 
+  //@ts-ignore
   req.session.user = { ...seal };
   await req.session.save();
 
@@ -21,7 +20,6 @@ router.get('/', async (req, res) => {
   }
 
   res.json(seal);
-  // res.render('pages/subadmin/index')
 });
 
 export { router };

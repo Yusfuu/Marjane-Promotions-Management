@@ -1,4 +1,6 @@
-export const promotionTime = async (req, res, next) => {
+import { NextFunction, Request, Response } from "express";
+
+export const promotionTime = async (req: Request, res: Response, next: NextFunction) => {
 
   const date = new Date();
 

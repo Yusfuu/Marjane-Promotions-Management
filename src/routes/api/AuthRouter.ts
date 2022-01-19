@@ -1,8 +1,7 @@
-import express from "express";
-import sendEmail from '../../utils/email';
-import { prisma } from "../../../prisma/client";
-import { seal } from "../../lib/seal";
-
+import express, { Request, Response } from "express";
+import { sendEmail } from '@utils/email';
+import { prisma } from "@lib/prisma";
+import { seal } from "@lib/seal";
 const router = express.Router();
 
 
@@ -12,10 +11,10 @@ const error = {
   missing: 'Sorry, you are missing some required fields. Please try again.',
 }
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req: Request, res: Response) => {
   const { email, user } = req.body;
 
-  const _prisma = {
+  const _prisma: any = {
     manager: prisma.manager,
     subadmin: prisma.subadmin,
   }
@@ -34,13 +33,13 @@ router.post('/login', async (req, res) => {
 
   const url = `${callback}?seal=${sealData}`;
 
-  await sendEmail(process.env.TEMP_EMAIL_PREFIX, url, email);
+  await sendEmail(process.env.TEMP_EMAIL_PREFIX as string, url);
 
   res.json({ message: 'Check your email to login your account' });
 });
 
 
-router.post('/logout', async (req, res) => {
+router.post('/logout', async (req: Request, res: Response) => {
   await req.session.destroy();
   res.json({
     message: 'logged out'
