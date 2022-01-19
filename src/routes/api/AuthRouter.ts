@@ -33,7 +33,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
   const url = `${callback}?seal=${sealData}`;
 
-  await sendEmail(process.env.TEMP_EMAIL_PREFIX as string, url);
+  await sendEmail(process.env.TEMP_EMAIL as string, url);
 
   res.json({ message: 'Check your email to login your account' });
 });
