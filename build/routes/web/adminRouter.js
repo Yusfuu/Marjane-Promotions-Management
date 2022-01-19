@@ -9,6 +9,20 @@ const index_1 = require("../../middlewares/index");
 const prisma_1 = require("../../lib/prisma");
 const router = express_1.default.Router();
 exports.router = router;
+const cards = [
+    {
+        title: 'Subadmin',
+        description: 'Passwordless login that’s delightful, blazing-fast, and fully customizable',
+        color: 'bg-purple-500',
+        url: '/admin/dashboard/subadmin'
+    },
+    {
+        title: 'Stastics',
+        description: 'Statistics of the Marjane including the number of promotion and others',
+        color: 'bg-blue-500',
+        url: '/admin/dashboard/stats'
+    },
+];
 // render login page for admin
 router.get('/login', (0, index_1.isAuthenticated)(), (req, res) => {
     res.render('pages/admin/login');
@@ -16,24 +30,6 @@ router.get('/login', (0, index_1.isAuthenticated)(), (req, res) => {
 router.use((0, index_1.isAuthenticated)('admin'));
 // render dashboard page for admin
 router.get('/dashboard', (req, res) => {
-    const { action } = req.query;
-    if (action === 'create') {
-        res.render('pages/admin/create');
-    }
-    const cards = [
-        {
-            title: 'Subadmin',
-            description: 'Passwordless login that’s delightful, blazing-fast, and fully customizable',
-            color: 'bg-purple-500',
-            url: '/admin/dashboard/subadmin'
-        },
-        {
-            title: 'Stastics',
-            description: 'Statistics of the Marjane including the number of promotion and others',
-            color: 'bg-blue-500',
-            url: '/admin/dashboard/stats'
-        },
-    ];
     res.render('pages/admin/dashboard', { cards });
 });
 router.get('/dashboard/stats', async (req, res) => {
@@ -51,6 +47,9 @@ router.get('/dashboard/subadmin', async (req, res) => {
             }
         }
     });
-    res.render('pages/admin/subadmin', { subadmins });
+    const centers = await prisma_1.prisma.center.findMany({
+        select: { id: true, name: true }
+    }).catch(_ => _);
+    res.render('pages/admin/subadmin', { subadmins, centers });
 });
 //# sourceMappingURL=adminRouter.js.map

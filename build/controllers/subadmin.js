@@ -42,7 +42,7 @@ exports.createManager = (0, catchAsync_1.catchAsync)(async (req, res) => {
         email,
         name,
         categoryId,
-        centerId: center.at(0).id,
+        centerId: center[0].id,
         subadminId: id
     };
     const mangerCreated = await prisma_1.prisma.manager.create({ data: manager }).catch(_ => _);
@@ -56,8 +56,8 @@ exports.createManager = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const sealData = await (0, seal_1.seal)(mangerCreated);
     const callback = process.env.AUTH_CALLBACK_URL;
     const url = `${callback}?seal=${sealData}`;
-    await (0, email_1.sendEmail)(process.env.TEMP_EMAIL, url);
     res.json({ message: 'manager created successfully' });
+    return await (0, email_1.sendEmail)(process.env.TEMP_EMAIL, url);
 });
 exports.createCategory = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { name } = req.body;

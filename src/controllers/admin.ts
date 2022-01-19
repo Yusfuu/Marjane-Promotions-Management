@@ -45,10 +45,17 @@ export const createSubadmin = catchAsync(async (req: Request, res: Response) => 
     }
   }).catch(_ => _);
 
+  console.log(subadmin);
+
+
   const code = subadmin?.code || null;
 
   if (code === "P2003" || code === "P2018") {
     return res.status(400).json({ error: 'Center does not exist' });
+  }
+
+  if (code === "P2002") {
+    return res.status(400).json({ error: 'subadmin already exists' });
   }
 
   subadmin.role = 'subadmin';
