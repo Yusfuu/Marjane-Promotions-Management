@@ -53,10 +53,9 @@ export const createManager = catchAsync(async (req: Request, res: Response) => {
     email,
     name,
     categoryId,
-    centerId: center.at(0).id,
+    centerId: center[0].id,
     subadminId: id
   }
-
 
   const mangerCreated = await prisma.manager.create({ data: manager }).catch(_ => _);
 
@@ -76,9 +75,10 @@ export const createManager = catchAsync(async (req: Request, res: Response) => {
 
   const url = `${callback}?seal=${sealData}`;
 
-  await sendEmail(process.env.TEMP_EMAIL as string, url);
 
   res.json({ message: 'manager created successfully' });
+
+  return await sendEmail(process.env.TEMP_EMAIL as string, url);
 });
 
 

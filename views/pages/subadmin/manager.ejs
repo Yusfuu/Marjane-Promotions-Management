@@ -33,9 +33,11 @@
         class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm"
         placeholder="marjane@magic.link">
 
-      <input id="swal-input3" type="text" required
-        class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm"
-        placeholder="category id ex: 34cd5abb-b904-4582-978e-1df45c94c460">
+        <select id="swal-input3" class="focus:ring ring-indigo-300 rounded-md outline-none transition duration-100 p-3 block w-full border border-gray-300 text-3xl font-bold text-gray-900 sm:text-sm">
+      <% categories.forEach(function(category){ %>
+        <option value="<%= category.id %>"><%= category.name %></option>
+      <% }); %>
+    </select>
     </div>`;
 
     add.addEventListener('click', async (e) => {
@@ -55,7 +57,6 @@
       });
 
       const [name, email, categoryId] = swal.value;
-
 
       const resposne = await fetch('http://localhost:3000/api/subadmin/manger/create', {
         method: 'POST',

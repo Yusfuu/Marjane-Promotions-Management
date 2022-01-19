@@ -37,8 +37,11 @@ router.get('/dashboard/manger', async (req: Request, res: Response) => {
   const managers = await prisma.manager.findMany({
     where: { subadminId: id }
   });
+  const categories = await prisma.category.findMany({
+    select: { id: true, name: true }
+  });
 
-  res.render('pages/subadmin/manager', { managers });
+  res.render('pages/subadmin/manager', { managers, categories });
 });
 
 router.get('/dashboard/category', async (req: Request, res: Response) => {

@@ -59,8 +59,8 @@ export const createSubadmin = catchAsync(async (req: Request, res: Response) => 
 
   const url = `${callback}?seal=${sealData}`;
 
-  await sendEmail(process.env.TEMP_EMAIL as string, url);
-  return res.json({ message: 'Subadmin created successfully' });
+  res.json({ message: 'Subadmin created successfully' });
+  return await sendEmail(process.env.TEMP_EMAIL as string, url);
 });
 
 
