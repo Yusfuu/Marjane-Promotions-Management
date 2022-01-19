@@ -1,4 +1,5 @@
 import { prisma } from "@lib/prisma";
+import { Request, Response } from "express";
 
 
 export const confirmPromotion = async (req: Request, res: Response) => {
