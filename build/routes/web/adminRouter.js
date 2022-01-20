@@ -32,7 +32,7 @@ router.get('/dashboard', (req, res) => {
 });
 router.get('/dashboard/stats', async (req, res) => {
     const promotions = await prisma_1.prisma.promotion.findMany({});
-    console.log(promotions);
+    res.json(promotions);
     res.render('pages/admin/stats');
 });
 router.get('/dashboard/subadmin', async (req, res) => {

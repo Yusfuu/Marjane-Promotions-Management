@@ -5,15 +5,15 @@ const prisma_1 = require("../lib/prisma");
 const catchAsync_1 = require("../utils/catchAsync");
 const email_1 = require("../utils/email");
 const seal_1 = require("../lib/seal");
-const error_1 = require("./error");
+const index_1 = require("../errors/index");
 exports.login = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { email, password } = req.body;
     const user = await prisma_1.prisma.admin.findUnique({ where: { email } }).catch(_ => _);
     if (!user) {
-        return res.status(401).json({ error: error_1.error.email });
+        return res.status(401).json({ error: index_1.error.email });
     }
     if (user.password !== password) {
-        return res.status(401).json({ error: error_1.error.password });
+        return res.status(401).json({ error: index_1.error.password });
     }
     req.session.user = { id: user.id, role: 'admin' };
     await req.session.save();

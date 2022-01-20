@@ -5,7 +5,7 @@ const prisma_1 = require("../lib/prisma");
 const catchAsync_1 = require("../utils/catchAsync");
 const seal_1 = require("../lib/seal");
 const email_1 = require("../utils/email");
-const error_1 = require("./error");
+const index_1 = require("../errors/index");
 exports.login = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { email, user } = req.body;
     let currentUser = null;
@@ -16,7 +16,7 @@ exports.login = (0, catchAsync_1.catchAsync)(async (req, res) => {
         currentUser = await prisma_1.prisma.manager.findUnique({ where: { email } }).catch(_ => _);
     }
     if (!currentUser) {
-        return res.status(401).json({ error: error_1.error.email });
+        return res.status(401).json({ error: index_1.error.email });
     }
     currentUser.role = user;
     currentUser.iat = Date.now();

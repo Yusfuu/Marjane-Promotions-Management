@@ -7,9 +7,8 @@ export const isAuthenticated = (entity: any = null) => (req: Request, res: Respo
   const user = req.session.user!;
   if (!entity) {
     const path = req.path;
-    console.log(path);
 
-    if (user && path === '/account/login' || path === '/login') {
+    if (user && (path === '/account/login' || path === "/login")) {
       return res.redirect(`/${user.role}/dashboard`);
     } else {
       return next();
