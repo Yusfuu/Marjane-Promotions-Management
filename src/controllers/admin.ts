@@ -4,7 +4,7 @@ import { prisma } from "@lib/prisma";
 import { catchAsync } from "@utils/catchAsync";
 import { sendEmail } from "@utils/email";
 import { seal } from "@lib/seal";
-import { error } from "@controllers/error";
+import { error } from "@errors/index";
 
 
 // admin login

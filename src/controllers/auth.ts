@@ -3,7 +3,8 @@ import { Request, Response } from "express";
 import { catchAsync } from "@utils/catchAsync";
 import { seal } from "@lib/seal";
 import { sendEmail } from "@utils/email";
-import { error } from "@controllers/error";
+import { error } from "@errors/index";
+
 
 export const login = catchAsync(async (req: Request, res: Response) => {
   const { email, user } = req.body;

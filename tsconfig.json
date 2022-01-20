@@ -15,10 +15,7 @@
     "paths": {
       "@lib/*": ["lib/*"],
       "@utils/*": ["utils/*"],
-      "@types/*": ["types/*"],
-      "@prisma/*": ["prisma/*"],
       "@routes/*": ["routes/*"],
-      "@services/*": ["services/*"],
       "@controllers/*": ["controllers/*"],
       "@middlewares/*": ["middlewares/*"],
       "@interfaces/*": ["interfaces/*"],
