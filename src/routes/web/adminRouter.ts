@@ -54,20 +54,21 @@ router.get('/dashboard/subadmin', async (req: Request, res: Response) => {
 });
 
 
-// router.get('/operations', requiredAuth({ role: 'ADMIN' }), async (req: Request, res: Response) => {
-//   // validate body
-//   const operations = await prisma.logs.findMany();
 
-//   res.json({ operations });
-// });
+router.get('/operations', async (req: Request, res: Response) => {
+  // validate body
+  const operations = await prisma.logs.findMany();
+
+  res.json({ operations });
+});
 
 
-// router.get('/export', requiredAuth({ role: 'ADMIN' }), async (req: Request, res: Response) => {
-//   // validate body
-//   const operations = await prisma.logs.findMany();
-//   require('fs').writeFileSync('./operations.json', JSON.stringify(operations));
-//   res.json({ operations });
-// });
+router.get('/export', async (req: Request, res: Response) => {
+  // validate body
+  const operations = await prisma.logs.findMany();
+  require('fs').writeFileSync('./operations.json', JSON.stringify(operations));
+  res.json({ operations });
+});
 
 
 

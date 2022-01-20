@@ -2,7 +2,7 @@ import { unseal } from "@lib/seal";
 import { catchAsync } from "@utils/catchAsync";
 import { Request, Response } from "express";
 
-
+// callback router for passworddless login
 export const callback = catchAsync(async (req: Request, res: Response) => {
   if (!req.query) res.json({ ok: false });
 
