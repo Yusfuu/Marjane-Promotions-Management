@@ -57,7 +57,6 @@ export const createManager = catchAsync(async (req: Request, res: Response) => {
   //@ts-ignore
   const { id, center } = req.session.user;
 
-
   const manager = {
     email,
     name,

@@ -8,12 +8,16 @@ import { error } from "@controllers/error";
 export const login = catchAsync(async (req: Request, res: Response) => {
   const { email, user } = req.body;
 
-  const _prisma: any = {
-    manager: prisma.manager,
-    subadmin: prisma.subadmin,
+  let currentUser: any = null;
+
+  if (user === 'subadmin') {
+    currentUser = await prisma.subadmin.findUnique({ where: { email }, include: { center: true } }).catch(_ => _);
   }
 
-  const currentUser = await _prisma[user].findUnique({ where: { email } }).catch(_ => _);
+  if (user === 'manager') {
+    currentUser = await prisma.manager.findUnique({ where: { email } }).catch(_ => _);
+  }
+
   if (!currentUser) {
     return res.status(401).json({ error: error.email });
   }
