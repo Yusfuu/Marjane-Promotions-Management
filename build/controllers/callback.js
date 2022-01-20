@@ -7,7 +7,6 @@ exports.callback = (0, catchAsync_1.catchAsync)(async (req, res) => {
     if (!req.query)
         res.json({ ok: false });
     const seal = await (0, seal_1.unseal)(req.query.seal);
-    //@ts-ignore
     req.session.user = { ...seal };
     await req.session.save();
     if (seal.role === 'subadmin') {

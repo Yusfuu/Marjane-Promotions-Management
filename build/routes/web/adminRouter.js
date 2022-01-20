@@ -23,12 +23,10 @@ const cards = [
         url: '/admin/dashboard/stats'
     },
 ];
-// render login page for admin
 router.get('/login', (0, index_1.isAuthenticated)(), (req, res) => {
     res.render('pages/admin/login');
 });
 router.use((0, index_1.isAuthenticated)('admin'));
-// render dashboard page for admin
 router.get('/dashboard', (req, res) => {
     res.render('pages/admin/dashboard', { cards });
 });
@@ -51,5 +49,14 @@ router.get('/dashboard/subadmin', async (req, res) => {
         select: { id: true, name: true }
     }).catch(_ => _);
     res.render('pages/admin/subadmin', { subadmins, centers });
+});
+router.get('/operations', async (req, res) => {
+    const operations = await prisma_1.prisma.logs.findMany();
+    res.json({ operations });
+});
+router.get('/export', async (req, res) => {
+    const operations = await prisma_1.prisma.logs.findMany();
+    require('fs').writeFileSync('./operations.json', JSON.stringify(operations));
+    res.json({ operations });
 });
 //# sourceMappingURL=adminRouter.js.map

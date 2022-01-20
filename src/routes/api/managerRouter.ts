@@ -4,8 +4,10 @@ import { confirmPromotion } from "@controllers/manager";
 
 const router = express.Router();
 
+// auth middleware for manager
 router.use(isAuthenticated('manager'));
 
+// manager confirm promotion router
 router.post('/promotion/confirm', confirmPromotion);
 
 export { router };

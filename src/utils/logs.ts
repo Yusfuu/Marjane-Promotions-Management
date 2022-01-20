@@ -1,6 +1,6 @@
-const { prisma } = require("../../prisma/client");
+import { prisma } from "@lib/prisma";
 
-export const logs = () => prisma.$use(async (params: { action: any; model: any; }, next: (arg0: any) => any) => {
+export const logs = () => prisma.$use(async (params, next: (arg0: any) => any) => {
   const result = await next(params)
   const { action, model } = params;
 

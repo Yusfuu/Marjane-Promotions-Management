@@ -22,7 +22,6 @@ router.get('/dashboard', (req, res) => {
     res.render('pages/manager/dashboard', { cards });
 });
 router.get('/dashboard/promotion', async (req, res) => {
-    //@ts-ignore
     const { categoryId, centerId } = req.session?.user;
     const confirmation = req?.query?.confirmation || false;
     const promotions = await prisma_1.prisma.promotion.findMany({

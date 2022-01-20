@@ -13,16 +13,14 @@ const transporter = nodemailer_1.default.createTransport({
     service: 'Gmail',
     auth: {
         user: 'checker.safiairline@gmail.com',
-        pass: 'SafiAIrline@123', // generated ethereal password
+        pass: 'SafiAIrline@123',
     },
 });
 const mailGenerator = new mailgen_1.default({
     theme: 'default',
     product: {
-        // Appears in header & footer of e-mails
         name: 'Marjan',
         link: 'https://github.com/Yusfuu/Management-of-Promotion-Marjane',
-        // Optional product logo
         logo: 'https://upload.wikimedia.org/wikipedia/ar/0/00/Marjane.gif'
     }
 });

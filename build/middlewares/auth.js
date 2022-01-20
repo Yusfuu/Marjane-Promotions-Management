@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAuthenticated = void 0;
 const isAuthenticated = (entity = null) => (req, res, next) => {
-    //@ts-ignore
     const user = req.session.user;
     if (!entity) {
         if (user && req.path === '/account/login') {

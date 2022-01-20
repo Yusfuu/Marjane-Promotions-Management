@@ -24,7 +24,6 @@ exports.app.use('/api/manager', index_1.apiManagerRouter);
 exports.app.use('/manager', index_1.managerRouter);
 exports.app.use('/api/account', index_1.apiAuthRouter);
 exports.app.use('/callback', index_1.callbackRouter);
-// handling 404 errors and handling internal server errors
 exports.app.use(error_1.notFound, error_1.handleError);
 const port = process.env.PORT || 3000;
 exports.app.listen(port, () => {

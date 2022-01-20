@@ -21,7 +21,6 @@ exports.createPromotion = (0, catchAsync_1.catchAsync)(async (req, res) => {
     if (product.Category.name === 'Multimedia' && discount > 20) {
         return res.status(400).json({ error: 'Discount cannot be more than 20 for Multimedia' });
     }
-    //@ts-ignore
     const { id } = req.session.user;
     const promotion = await prisma_1.prisma.promotion.create({
         data: {
@@ -36,7 +35,6 @@ exports.createPromotion = (0, catchAsync_1.catchAsync)(async (req, res) => {
 });
 exports.createManager = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { email, name, categoryId } = req.body;
-    //@ts-ignore
     const { id, center } = req.session.user;
     const manager = {
         email,

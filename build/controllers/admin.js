@@ -5,21 +5,16 @@ const prisma_1 = require("../lib/prisma");
 const catchAsync_1 = require("../utils/catchAsync");
 const email_1 = require("../utils/email");
 const seal_1 = require("../lib/seal");
-const error = {
-    email: 'The email you entered doesn\'t belong to an account. Please check your email and try again.',
-    password: 'Sorry, your password was incorrect. Please double-check your password.',
-    missing: 'Sorry, you are missing some required fields. Please try again.',
-};
+const error_1 = require("./error");
 exports.login = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { email, password } = req.body;
     const user = await prisma_1.prisma.admin.findUnique({ where: { email } }).catch(_ => _);
     if (!user) {
-        return res.status(401).json({ error: error.email });
+        return res.status(401).json({ error: error_1.error.email });
     }
     if (user.password !== password) {
-        return res.status(401).json({ error: error.password });
+        return res.status(401).json({ error: error_1.error.password });
     }
-    //@ts-ignore
     req.session.user = { id: user.id, role: 'admin' };
     await req.session.save();
     res.json({ ok: true });
@@ -38,6 +33,9 @@ exports.createSubadmin = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const code = subadmin?.code || null;
     if (code === "P2003" || code === "P2018") {
         return res.status(400).json({ error: 'Center does not exist' });
+    }
+    if (code === "P2002") {
+        return res.status(400).json({ error: 'subadmin already exists' });
     }
     subadmin.role = 'subadmin';
     const sealData = await (0, seal_1.seal)(subadmin);

@@ -34,7 +34,6 @@ router.get('/dashboard', (req, res) => {
     res.render('pages/subadmin/dashboard', { cards });
 });
 router.get('/dashboard/manger', async (req, res) => {
-    // @ts-ignore
     const { id } = req.session.user;
     const managers = await prisma_1.prisma.manager.findMany({
         where: { subadminId: id }
@@ -57,7 +56,6 @@ router.get('/dashboard/category', async (req, res) => {
     res.render('pages/subadmin/category', { categories });
 });
 router.get('/dashboard/promotion', async (req, res) => {
-    //@ts-ignore
     const { id } = req.session.user;
     const promotions = await prisma_1.prisma.promotion.findMany({
         where: {
@@ -74,7 +72,6 @@ router.get('/dashboard/promotion', async (req, res) => {
     res.render('pages/subadmin/promotion', { promotions });
 });
 router.get('/promotions', async (req, res) => {
-    // @ts-ignore
     const { id } = req.session.user;
     const promotions = await prisma_1.prisma.promotion.findMany({
         where: {
