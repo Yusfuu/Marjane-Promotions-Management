@@ -1,1 +1,1 @@
-{"version":3,"file":"callbackRouter.js","sourceRoot":"","sources":["../../../src/routes/api/callbackRouter.ts"],"names":[],"mappings":";;;;;;AAAA,sDAA8B;AAC9B,oDAAiD;AAEjD,MAAM,MAAM,GAAG,iBAAO,CAAC,MAAM,EAAE,CAAC;AAIvB,wBAAM;AAFf,MAAM,CAAC,GAAG,CAAC,GAAG,EAAE,mBAAQ,CAAC,CAAC"}
+{"version":3,"file":"callbackRouter.js","sourceRoot":"","sources":["../../../src/routes/api/callbackRouter.ts"],"names":[],"mappings":";;;;;;AAAA,sDAA8B;AAC9B,oDAAiD;AAEjD,MAAM,MAAM,GAAG,iBAAO,CAAC,MAAM,EAAE,CAAC;AAKvB,wBAAM;AAFf,MAAM,CAAC,GAAG,CAAC,GAAG,EAAE,mBAAQ,CAAC,CAAC"}

@@ -4,10 +4,12 @@ import { session } from '@lib/session';
 import { isAuthenticated } from "@middlewares/auth";
 import { adminRouter, apiAdminRouter, apiAuthRouter, apiManagerRouter, apiSubadminRouter, callbackRouter, managerRouter, subadminRouter } from "@routes/index";
 import { handleError, notFound } from '@middlewares/error';
+import { limiter } from '@middlewares/limiter';
 
 export const app = express();
 app.set('view engine', 'ejs');
 app.use(express.json());
+app.use(limiter);
 app.use(session);
 
 app.get('/', (req: Request, res: Response): void => res.render('pages/home'));
